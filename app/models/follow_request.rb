@@ -17,23 +17,34 @@ class FollowRequest < ApplicationRecord
     :uniqueness => { :scope => [:sender_id] }
   })
 
-  def sender
-    my_sender_id = self.sender_id
+  ## Direct associations:
 
-    matching_users = User.where({ :id => my_sender_id })
+  # FollowRequest#sender: returns a row from the users table associated to this follow request by the sender_id column
+  belongs_to(:sender, :class_name => "User", :foreign_key => "sender_id")
 
-    the_user = matching_users.at(0)
+  # FollowRequest#recipient: returns a row from the users table associated to this follow request by the recipient_id column
+  belongs_to(:recipient, :class_name => "User", :foreign_key => "recipient_id")
+  
 
-    return the_user
-  end
+  ## Previous methods:
 
-  def recipient
-    my_recipient_id = self.recipient_id
+  # def sender
+  #   my_sender_id = self.sender_id
 
-    matching_users = User.where({ :id => my_recipient_id })
+  #   matching_users = User.where({ :id => my_sender_id })
 
-    the_user = matching_users.at(0)
+  #   the_user = matching_users.at(0)
 
-    return the_user
-  end
+  #   return the_user
+  # end
+
+  # def recipient
+  #   my_recipient_id = self.recipient_id
+
+  #   matching_users = User.where({ :id => my_recipient_id })
+
+  #   the_user = matching_users.at(0)
+
+  #   return the_user
+  # end
 end
